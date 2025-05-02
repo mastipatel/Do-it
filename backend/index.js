@@ -1,10 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const chore = require('./models/chores.js');
-const user = require('./models/users.js');
 const choreRoute = require("./routes/chore.route.js");
 const userRoute = require("./routes/user.route.js")
 const app = express();
+
+const jwtCheck = require('./middleware/auth');
+app.use('/api', jwtCheck);
 
 //middleware
 app.use(express.json());
@@ -28,3 +29,5 @@ mongoose.connect('mongodb+srv://mastipatel:ahopFZGP58nfJAtG@cluster0.mkdb5nx.mon
   .catch((e) => {
     console.log('Connection fail'+encodeURI);
   })  
+
+
