@@ -19,6 +19,17 @@ const getChore = async (req, res) => {
       }
 };
 
+const getChoreByEmail = async (req, res) => {
+    try{
+        const { email } = req.params;
+        const foundChore = await chore.find({assignee: email});
+        res.status(200).json(foundChore);
+      } catch (error) {
+        res.status(500).json({message: error.message});
+      }
+};
+
+
 const createChore = async (req,res) => {
     try{
         const createdChore = await chore.create(req.body);
@@ -64,6 +75,7 @@ module.exports = {
     getChore,
     createChore,
     updateChore,
-    deleteChore
+    deleteChore,
+    getChoreByEmail
 };
 

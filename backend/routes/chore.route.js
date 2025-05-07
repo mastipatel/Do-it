@@ -1,10 +1,11 @@
 const express = require("express");
 const Chore = require("../models/chores.js");
 const router = express.Router();
-const {getChores, getChore, createChore, updateChore, deleteChore} = require('../controllers/chore.controller.js');
+const {getChores, getChore, createChore, updateChore, deleteChore, getChoreByEmail} = require('../controllers/chore.controller.js');
 
 router.get('/', getChores);
 router.get('/:id', getChore);
+router.get('/by-email/:email', getChoreByEmail);
 
 router.post('/', createChore);
 
