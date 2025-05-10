@@ -25,7 +25,6 @@ export default function SignInForm() {
     });
 
     const data = await res.json();
-    console.log("Adadadaa");
 
     if (res.ok) {
       router.push("/dashboard");
@@ -36,48 +35,41 @@ export default function SignInForm() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-md shadow-md w-full max-w-md"
-      >
-        <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+    <div className="form-container">
+      <form onSubmit={handleSubmit} className="form-box">
+        <h2 className="form-heading">Sign Up</h2>
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Email</label>
+          <label className="label">Email</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input"
             required
           />
         </div>
         <div className="mb-6">
-          <label className="block text-gray-700 mb-2">Password</label>
+          <label className="label">Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input"
             required
           />
         </div>
         <div>
-          <label className="block text-gray-700 mb-2">Confirm Password</label>
+          <label className="label">Confirm Password</label>
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input"
             required
           />
         </div>
-
         <div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200"
-          >
+          <button type="submit" className="button">
             Sign Up
           </button>
           <p className="mt-4 text-center">
