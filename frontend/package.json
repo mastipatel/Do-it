@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",
+    "@hello-pangea/dnd": "^18.0.1",
     "@tailwindcss/typography": "github:tailwindcss/typography",
     "js-cookie": "^3.0.5",
     "next": "^15.3.1",

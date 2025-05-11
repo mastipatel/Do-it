@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
+import Board from "./components/Board";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -28,6 +28,8 @@ export default function DashboardPage() {
         <div className="max-w-xl mx-auto bg-white p-6 rounded shadow">
           <h1 className="text-2xl font-bold mb-4 text-center">My Chores</h1>
         </div>
+
+        <Board />
       </div>
     </div>
   );
