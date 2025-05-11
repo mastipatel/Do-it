@@ -1,25 +1,20 @@
 "use client";
 import React, { useState } from "react";
 import Card from "./Card";
-
-export interface Task {
-  id: string;
-  name: string;
-  desc: string;
-  category: string;
-  assignee: string;
-  deadline: string;
-  reminder: boolean;
-  status: "To-do" | "In-progress" | "Done";
-}
-
+import type { Task } from "./Board";
 interface ColumnProps {
   title: Task["status"];
+  tasks: Task[];
+  onAddTask: (task: Task) => void;
   onStatusChange: (id: string, newStatus: Task["status"]) => void;
 }
 
-const Column: React.FC<ColumnProps> = ({ title, onStatusChange }) => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+const Column: React.FC<ColumnProps> = ({
+  title,
+  tasks,
+  onAddTask,
+  onStatusChange,
+}) => {
   const [showForm, setShowForm] = useState(false);
 
   const [formData, setFormData] = useState<Omit<Task, "id">>({
@@ -34,15 +29,15 @@ const Column: React.FC<ColumnProps> = ({ title, onStatusChange }) => {
 
   const handleAddTask = () => {
     const newTask: Task = { id: crypto.randomUUID(), ...formData };
-    setTasks((prev) => [...prev, newTask]);
+    onAddTask(newTask);
     setFormData({
-      ...formData,
       name: "",
       desc: "",
+      category: "",
       assignee: "",
       deadline: "",
-      category: "",
       reminder: false,
+      status: title,
     });
     setShowForm(false);
   };
@@ -57,19 +52,35 @@ const Column: React.FC<ColumnProps> = ({ title, onStatusChange }) => {
       </div>
 
       {!showForm ? (
-        <button
-          onClick={() => setShowForm(true)}
-          className="text-blue-600 text-sm font-medium hover:underline"
-        >
+        <button onClick={() => setShowForm(true)} className="button">
           + Add Task
         </button>
       ) : (
         <div className="bg-white p-3 rounded shadow flex flex-col gap-2">
+          <select
+            value={formData.category}
+            onChange={(e) =>
+              setFormData({ ...formData, category: e.target.value })
+            }
+            className="border p-1 rounded text-sm"
+          >
+            <option value="">Select category</option>
+            <option value="kitchen">Kitchen</option>
+            <option value="bathroom">Bathroom</option>
+            <option value="backyard">Backyard</option>
+          </select>
           <input
             type="text"
             placeholder="Task name"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            className="border p-1 rounded text-sm"
+          />
+          <input
+            type="text"
+            placeholder="description"
+            value={formData.desc}
+            onChange={(e) => setFormData({ ...formData, desc: e.target.value })}
             className="border p-1 rounded text-sm"
           />
           <input

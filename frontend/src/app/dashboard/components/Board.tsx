@@ -2,14 +2,31 @@
 import { useState } from "react";
 import Column from "./Column";
 
-const STATUSES = ["To-do", "In-progress", "Done"] as const;
+export interface Task {
+  id: string;
+  name: string;
+  desc: string;
+  category: string;
+  assignee: string;
+  deadline: string;
+  reminder: boolean;
+  status: "To-do" | "In-progress" | "Done";
+}
+const STATUSES: Task["status"][] = ["To-do", "In-progress", "Done"];
 
 const Board = () => {
-  const handleStatusChange = (
-    id: string,
-    status: "To-do" | "In-progress" | "Done"
-  ) => {
-    console.log("Task", id, "changed to", status);
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  const handleAddTask = (task: Task) => {
+    setTasks((prev) => [...prev, task]);
+  };
+
+  const handleStatusChange = (id: string, newStatus: Task["status"]) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id ? { ...task, status: newStatus } : task
+      )
+    );
   };
 
   return (
@@ -18,6 +35,8 @@ const Board = () => {
         <Column
           key={status}
           title={status}
+          tasks={tasks.filter((task) => task.status === status)}
+          onAddTask={handleAddTask}
           onStatusChange={handleStatusChange}
         />
       ))}
