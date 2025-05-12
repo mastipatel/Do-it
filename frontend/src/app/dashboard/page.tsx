@@ -19,14 +19,14 @@ export default function DashboardPage() {
   };
 
   return (
-    <div>
+    <div className="bg-gray-100">
       <button className="logoutbutton" onClick={handleLogout}>
         Logout
       </button>
 
-      <div className="min-h-screen p-6 mb-3">
-        <div className="max-w-xl mx-auto bg-white p-6 rounded shadow">
-          <h1 className="text-2xl font-bold mb-4 text-center">My Chores</h1>
+      <div className="min-h-screen p-6 mb-3 bg-green-50">
+        <div className="max-w-xl mx-auto bg-white p-6 rounded shadow ">
+          <h1 className="text-2xl font-bold mb-4 text-center ">ALL CHORES</h1>
         </div>
 
         <Board />

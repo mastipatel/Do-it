@@ -43,11 +43,11 @@ const Column: React.FC<ColumnProps> = ({
   };
 
   return (
-    <div className="bg-gray-100 p-4 rounded w-80 min-w-[20rem] shadow flex flex-col">
+    <div className="bg-blue-100 p-4 rounded w-80 min-w-[20rem] shadow flex flex-col">
       <h2 className="text-xl font-semibold text-gray-800 mb-4">{title}</h2>
       <div className="flex flex-col gap-4 flex-1 mb-4">
         {tasks.map((task) => (
-          <Card key={task.id} {...task} onStatusChange={onStatusChange} />
+          <Card key={task.id} {...task} onStatusChange={onStatusChange} /> //For each task, it renders a card and passes all information to the card component
         ))}
       </div>
 

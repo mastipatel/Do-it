@@ -15,7 +15,7 @@ export interface Task {
 const STATUSES: Task["status"][] = ["To-do", "In-progress", "Done"];
 
 const Board = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]); //aLL TASKS ARE STORED
 
   const handleAddTask = (task: Task) => {
     setTasks((prev) => [...prev, task]);
@@ -30,16 +30,20 @@ const Board = () => {
   };
 
   return (
-    <div className="flex gap-4 p-4 overflow-x-auto">
-      {STATUSES.map((status) => (
-        <Column
-          key={status}
-          title={status}
-          tasks={tasks.filter((task) => task.status === status)}
-          onAddTask={handleAddTask}
-          onStatusChange={handleStatusChange}
-        />
-      ))}
+    <div className="flex gap-4 p-4 overflow-x-auto justify-center">
+      {STATUSES.map(
+        (
+          status //for each status, create col, & pass add&update status func
+        ) => (
+          <Column
+            key={status}
+            title={status}
+            tasks={tasks.filter((task) => task.status === status)}
+            onAddTask={handleAddTask}
+            onStatusChange={handleStatusChange}
+          />
+        )
+      )}
     </div>
   );
 };
