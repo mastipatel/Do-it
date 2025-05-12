@@ -44,7 +44,7 @@ const updateChore = async (req, res) => {
         const { id } = req.params;
         const findchore = await chore.findByIdAndUpdate(id, req.body);
    
-        if(!chore) {
+        if(!findchore) {
          return res.status(404).json({message: "Chore not found"});
         }
    
@@ -61,7 +61,7 @@ const deleteChore = async (req, res) => {
         const {id} = req.params;
         const choreToDelete = await chore.findByIdAndDelete(id);
     
-        if(!chore) {
+        if(!choreToDelete) {
           return res.status(404).json({message: "Chore not found"});
          }
          res.status(200).json({message: "Chore deleted succesfully"});

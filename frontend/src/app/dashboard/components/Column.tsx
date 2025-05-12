@@ -17,29 +17,44 @@ const Column: React.FC<ColumnProps> = ({
 }) => {
   const [showForm, setShowForm] = useState(false);
 
-  const [formData, setFormData] = useState<Omit<Task, "id">>({
+  const [formData, setFormData] = useState<Omit<Task, "_id">>({
     name: "",
-    desc: "",
+    description: "",
     category: "",
     assignee: "",
-    deadline: "",
-    reminder: false,
+    Deadline: "",
+    Reminder: false,
     status: title,
   });
 
-  const handleAddTask = () => {
-    const newTask: Task = { id: crypto.randomUUID(), ...formData };
-    onAddTask(newTask);
-    setFormData({
-      name: "",
-      desc: "",
-      category: "",
-      assignee: "",
-      deadline: "",
-      reminder: false,
-      status: title,
-    });
-    setShowForm(false);
+  const handleAddTask = async () => {
+    console.log("handleAddTask called");
+    const data = { ...formData };
+
+    try {
+      const res = await fetch("http://localhost:4000/api/chores/add-chore", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const savedChore = await res.json();
+      console.log("Saved chore:", savedChore);
+
+      onAddTask(savedChore);
+      setFormData({
+        name: "",
+        description: "",
+        category: "",
+        assignee: "",
+        Deadline: "",
+        Reminder: false,
+        status: title,
+      });
+      setShowForm(false);
+    } catch (error) {
+      console.error("Error adding chore:", error);
+    }
   };
 
   return (
@@ -47,7 +62,7 @@ const Column: React.FC<ColumnProps> = ({
       <h2 className="text-xl font-semibold text-gray-800 mb-4">{title}</h2>
       <div className="flex flex-col gap-4 flex-1 mb-4">
         {tasks.map((task) => (
-          <Card key={task.id} {...task} onStatusChange={onStatusChange} /> //For each task, it renders a card and passes all information to the card component
+          <Card key={task._id} {...task} onStatusChange={onStatusChange} /> //For each task, it renders a card and passes all information to the card component
         ))}
       </div>
 
@@ -79,8 +94,10 @@ const Column: React.FC<ColumnProps> = ({
           <input
             type="text"
             placeholder="description"
-            value={formData.desc}
-            onChange={(e) => setFormData({ ...formData, desc: e.target.value })}
+            value={formData.description}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
             className="border p-1 rounded text-sm"
           />
           <input
@@ -94,9 +111,9 @@ const Column: React.FC<ColumnProps> = ({
           />
           <input
             type="date"
-            value={formData.deadline}
+            value={formData.Deadline}
             onChange={(e) =>
-              setFormData({ ...formData, deadline: e.target.value })
+              setFormData({ ...formData, Deadline: e.target.value })
             }
             className="border p-1 rounded text-sm"
           />

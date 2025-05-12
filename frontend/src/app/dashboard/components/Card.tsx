@@ -2,13 +2,13 @@
 import React, { useState } from "react";
 
 export interface CardProps {
-  id: string;
+  _id: string;
   name: string;
-  desc: string;
+  description: string;
   category: string;
   assignee: string;
-  deadline: string;
-  reminder: boolean;
+  Deadline: string;
+  Reminder: boolean;
   status: "To-do" | "In-progress" | "Done";
   onStatusChange: (id: string, newStatus: CardProps["status"]) => void;
 }
@@ -20,7 +20,7 @@ const Card: React.FC<CardProps> = (props) => {
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newStatus = e.target.value as CardProps["status"];
     //setLocalStatus(newStatus);
-    props.onStatusChange(props.id, newStatus);
+    props.onStatusChange(props._id, newStatus);
   };
 
   return (
@@ -32,7 +32,7 @@ const Card: React.FC<CardProps> = (props) => {
         <div className="font-semibold text-gray-900 mb-1">{props.name}</div>
         <div className="text-xs text-gray-500">{props.assignee}</div>
         <div className="text-xs text-gray-500">{props.category}</div>
-        <div className="text-xs text-gray-500">Due: {props.deadline}</div>
+        <div className="text-xs text-gray-500">Due: {props.Deadline}</div>
       </div>
 
       {showModal && (
@@ -49,13 +49,14 @@ const Card: React.FC<CardProps> = (props) => {
               <strong>Category:</strong> {props.category || "None"}
             </p>
             <p>
-              <strong>Description:</strong> {props.desc || "No description"}
+              <strong>Description:</strong>{" "}
+              {props.description || "No descriptionription"}
             </p>
             <p>
               <strong>Assignee:</strong> {props.assignee}
             </p>
             <p>
-              <strong>Deadline:</strong> {props.deadline}
+              <strong>Deadline:</strong> {props.Deadline}
             </p>
             <label className="block mt-2 text-sm font-medium">
               Change Status:
@@ -63,7 +64,7 @@ const Card: React.FC<CardProps> = (props) => {
                 value={props.status}
                 onChange={(e) =>
                   props.onStatusChange(
-                    props.id,
+                    props._id,
                     e.target.value as CardProps["status"]
                   )
                 }
