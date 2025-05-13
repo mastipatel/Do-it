@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import type { Task } from "./Board";
 interface ColumnProps {
@@ -7,6 +7,8 @@ interface ColumnProps {
   tasks: Task[];
   onAddTask: (task: Task) => void;
   onStatusChange: (id: string, newStatus: Task["status"]) => void;
+  onDelete: (id: string) => void;
+  onEdit: (id: string, updatedData: Partial<Task>) => void;
 }
 
 const Column: React.FC<ColumnProps> = ({
@@ -14,6 +16,8 @@ const Column: React.FC<ColumnProps> = ({
   tasks,
   onAddTask,
   onStatusChange,
+  onDelete,
+  onEdit,
 }) => {
   const [showForm, setShowForm] = useState(false);
 
@@ -29,6 +33,10 @@ const Column: React.FC<ColumnProps> = ({
 
   const handleAddTask = async () => {
     const data = { ...formData };
+    if (!data.name || !data.description || !data.category || !data.assignee) {
+      alert("Please fill in all fields");
+      return;
+    }
 
     try {
       const res = await fetch("http://localhost:4000/api/chores/add-chore", {
@@ -55,12 +63,26 @@ const Column: React.FC<ColumnProps> = ({
     }
   };
 
+  const handleLocalDelete = async (id: string) => {
+    try {
+      await onDelete(id);
+    } catch (error) {
+      console.error("Error deleting chore:", error);
+    }
+  };
+
   return (
     <div className="column">
       <h2 className="text-xl font-semibold text-gray-800 mb-4">{title}</h2>
       <div className="flex flex-col gap-4 flex-1 mb-4">
         {tasks.map((task) => (
-          <Card key={task._id} {...task} onStatusChange={onStatusChange} /> //For each task, it renders a card and passes all information to the card component
+          <Card
+            key={task._id}
+            {...task}
+            onStatusChange={onStatusChange}
+            onDelete={handleLocalDelete}
+            onEdit={() => {}}
+          />
         ))}
       </div>
 

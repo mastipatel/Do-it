@@ -11,6 +11,8 @@ export interface CardProps {
   Reminder: boolean;
   status: "To-do" | "In-progress" | "Done";
   onStatusChange: (id: string, newStatus: CardProps["status"]) => void;
+  onDelete: (id: string) => void;
+  onEdit: (id: string, updatedData: Partial<CardProps>) => void;
 }
 
 const Card: React.FC<CardProps> = (props) => {
@@ -27,8 +29,28 @@ const Card: React.FC<CardProps> = (props) => {
     <>
       <div
         onClick={() => setShowModal(true)} //task card preview
-        className="taskCard"
+        className="taskCard relative pt-8 px-4 pb-4"
       >
+        <button
+          className="editButton absolute top-2 right-7 hover:bg-gray-200 rounded"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowModal(true); // Reuse existing modal logic for editing
+            props.onEdit(props._id, { status: props.status });
+          }}
+        >
+          ✎
+        </button>
+        <button
+          className="deleteButton text-red-500 absolute top-2 right-2 hover:bg-gray-200 rounded"
+          onClick={(e) => {
+            if (confirm("Are you sure you want to delete this task?")) {
+              props.onDelete(props._id);
+            }
+          }}
+        >
+          ✕
+        </button>
         <div className="font-semibold text-gray-900 mb-1">{props.name}</div>
         <div className="text-xs text-gray-500">{props.assignee}</div>
         <div className="text-xs text-gray-500">{props.category}</div>
@@ -50,7 +72,7 @@ const Card: React.FC<CardProps> = (props) => {
             </p>
             <p>
               <strong>Description:</strong>{" "}
-              {props.description || "No descriptionription"}
+              {props.description || "No description"}
             </p>
             <p>
               <strong>Assignee:</strong> {props.assignee}

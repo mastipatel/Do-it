@@ -53,6 +53,17 @@ const Board = () => {
     }
   };
 
+  const handleDeleteTask = async (_id: string) => {
+    try {
+      await fetch(`http://localhost:4000/api/chores/${_id}`, {
+        method: "DELETE",
+      });
+      setTasks((prev) => prev.filter((task) => task._id !== _id));
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
+
   return (
     <div className="flex gap-4 p-4 overflow-x-auto justify-center">
       {STATUSES.map(
@@ -65,6 +76,8 @@ const Board = () => {
             tasks={tasks.filter((task) => task.status === status)}
             onAddTask={handleAddTask}
             onStatusChange={handleStatusChange}
+            onDelete={handleDeleteTask}
+            onEdit={() => {}}
           />
         )
       )}
