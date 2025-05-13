@@ -28,7 +28,6 @@ const Column: React.FC<ColumnProps> = ({
   });
 
   const handleAddTask = async () => {
-    console.log("handleAddTask called");
     const data = { ...formData };
 
     try {
@@ -39,7 +38,6 @@ const Column: React.FC<ColumnProps> = ({
       });
 
       const savedChore = await res.json();
-      console.log("Saved chore:", savedChore);
 
       onAddTask(savedChore);
       setFormData({
@@ -58,7 +56,7 @@ const Column: React.FC<ColumnProps> = ({
   };
 
   return (
-    <div className="bg-blue-100 p-4 rounded w-80 min-w-[20rem] shadow flex flex-col">
+    <div className="column">
       <h2 className="text-xl font-semibold text-gray-800 mb-4">{title}</h2>
       <div className="flex flex-col gap-4 flex-1 mb-4">
         {tasks.map((task) => (
@@ -119,7 +117,7 @@ const Column: React.FC<ColumnProps> = ({
           />
           <button
             onClick={handleAddTask}
-            className="bg-blue-600 text-white text-sm px-2 py-1 rounded mt-1"
+            className="bg-blue-500 text-white text-sm px-2 py-1 rounded mt-1"
           >
             Add
           </button>

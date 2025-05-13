@@ -27,7 +27,7 @@ const Card: React.FC<CardProps> = (props) => {
     <>
       <div
         onClick={() => setShowModal(true)} //task card preview
-        className="bg-white p-4 rounded shadow cursor-pointer"
+        className="taskCard"
       >
         <div className="font-semibold text-gray-900 mb-1">{props.name}</div>
         <div className="text-xs text-gray-500">{props.assignee}</div>

@@ -29,6 +29,13 @@ const config: Config = {
 					"100": "#F7F7F7",
 					DEFAULT: "#FFFFFF",
 				},
+				custom: {
+					background: "#f5f7fa",
+					column: "#dff1fd",
+					card: "#ffffff",
+					header: "#273c75",
+					accent: "#00a8ff",
+				},
 			},
 			fontFamily: {
 				"work-sans": ["var(--font-work-sans)"],
