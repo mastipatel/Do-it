@@ -20,8 +20,9 @@ const Column: React.FC<ColumnProps> = ({
   onEdit,
 }) => {
   const [showForm, setShowForm] = useState(false);
+  const [editForm, setEditForm] = useState<false | Task>(false);
 
-  const [formData, setFormData] = useState<Omit<Task, "_id">>({
+  const [formData, setFormData] = useState({
     name: "",
     description: "",
     category: "",
@@ -30,6 +31,20 @@ const Column: React.FC<ColumnProps> = ({
     Reminder: false,
     status: title,
   });
+
+  useEffect(() => {
+    if (editForm) {
+      setFormData({
+        name: editForm.name,
+        description: editForm.description,
+        category: editForm.category,
+        assignee: editForm.assignee,
+        Deadline: editForm.Deadline,
+        Reminder: editForm.Reminder,
+        status: editForm.status,
+      });
+    }
+  }, [editForm]);
 
   const handleAddTask = async () => {
     const data = { ...formData };
@@ -71,17 +86,25 @@ const Column: React.FC<ColumnProps> = ({
     }
   };
 
+  const handleLocalEdit = async (id: string, updatedData: Partial<Task>) => {
+    try {
+      await onEdit(id, updatedData);
+    } catch (error) {
+      console.error("Error editing chore:", error);
+    }
+  };
+
   return (
     <div className="column">
       <h2 className="text-xl font-semibold text-gray-800 mb-4">{title}</h2>
       <div className="flex flex-col gap-4 flex-1 mb-4">
-        {tasks.map((task) => (
+        {tasks.map((task: Task) => (
           <Card
             key={task._id}
             {...task}
             onStatusChange={onStatusChange}
             onDelete={handleLocalDelete}
-            onEdit={() => {}}
+            onEdit={handleLocalEdit}
           />
         ))}
       </div>
@@ -131,7 +154,7 @@ const Column: React.FC<ColumnProps> = ({
           />
           <input
             type="date"
-            value={formData.Deadline}
+            value={formData.Deadline?.slice(0, 10) || ""}
             onChange={(e) =>
               setFormData({ ...formData, Deadline: e.target.value })
             }
@@ -148,5 +171,4 @@ const Column: React.FC<ColumnProps> = ({
     </div>
   );
 };
-
 export default Column;

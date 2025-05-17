@@ -64,6 +64,22 @@ const Board = () => {
     }
   };
 
+  const handleEditTask = async (_id: string, updatedData: Partial<Task>) => {
+    try {
+      const response = await fetch(`http://localhost:4000/api/chores/${_id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedData),
+      });
+      const updatedTask = await response.json();
+      setTasks((prev) =>
+        prev.map((task) => (task._id === _id ? updatedTask : task))
+      );
+    } catch (error) {
+      console.error("Error editing task:", error);
+    }
+  };
+
   return (
     <div className="flex gap-4 p-4 overflow-x-auto justify-center">
       {STATUSES.map(
@@ -77,7 +93,7 @@ const Board = () => {
             onAddTask={handleAddTask}
             onStatusChange={handleStatusChange}
             onDelete={handleDeleteTask}
-            onEdit={() => {}}
+            onEdit={handleEditTask}
           />
         )
       )}
