@@ -29,9 +29,10 @@ app.get('/', (req, res) => {
 mongoose.connect('mongodb+srv://mastipatel:pVFZ87TwoDqbLLIa@cluster0.mkdb5nx.mongodb.net/do-it')
   .then(() => {
     console.log('Connected to database!');
-    app.listen(4000, () => {
-        console.log('Server is running on port 4000')
-    });
+    const PORT = process.env.PORT || 4000;
+    app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 })
   .catch((e) => {
     console.log('Connection fail'+encodeURI);
