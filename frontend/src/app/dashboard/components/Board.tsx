@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import Column from "./Column";
-
 export interface Task {
   _id: string;
   name: string;

@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 
 export default function SignInForm() {
   const [email, setEmail] = useState("");
