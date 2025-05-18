@@ -19,7 +19,9 @@ const Board = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/chores");
+        const response = await fetch(
+          "https://do-it-backend-de38.onrender.com/api/chores"
+        );
         const data = await response.json();
         setTasks(data);
       } catch (error) {
@@ -42,11 +44,14 @@ const Board = () => {
         )
       );
 
-      const response = await fetch(`http://localhost:4000/api/chores/${_id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
-      });
+      const response = await fetch(
+        `https://do-it-backend-de38.onrender.com/api/chores/${_id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: newStatus }),
+        }
+      );
     } catch (error) {
       console.error("Error updating task status:", error);
     }
@@ -54,7 +59,7 @@ const Board = () => {
 
   const handleDeleteTask = async (_id: string) => {
     try {
-      await fetch(`http://localhost:4000/api/chores/${_id}`, {
+      await fetch(`https://do-it-backend-de38.onrender.com/api/chores/${_id}`, {
         method: "DELETE",
       });
       setTasks((prev) => prev.filter((task) => task._id !== _id));
@@ -65,11 +70,14 @@ const Board = () => {
 
   const handleEditTask = async (_id: string, updatedData: Partial<Task>) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/chores/${_id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedData),
-      });
+      const response = await fetch(
+        `https://do-it-backend-de38.onrender.com/api/chores/${_id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedData),
+        }
+      );
       const updatedTask = await response.json();
       setTasks((prev) =>
         prev.map((task) => (task._id === _id ? updatedTask : task))
