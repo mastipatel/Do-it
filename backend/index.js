@@ -11,16 +11,13 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true
 }));
 
 //routes
 app.use("/api/chores", choreRoute);
 app.use("/api/users", userRoute);
-
-app.use(bodyParser.json());
-app.use(cors());
 
 app.get('/', (req, res) => {
     res.send("Hello fron Node API Server Updated");
@@ -35,7 +32,7 @@ mongoose.connect('mongodb+srv://mastipatel:pVFZ87TwoDqbLLIa@cluster0.mkdb5nx.mon
 });
 })
   .catch((e) => {
-    console.log('Connection fail'+encodeURI);
+    console.log('Connection fail'+ e);
   })  
 
 
