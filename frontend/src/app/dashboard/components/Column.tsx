@@ -96,7 +96,7 @@ const Column: React.FC<ColumnProps> = ({
 
   return (
     <div className="column">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">{title}</h2>
+      <h2 className="text-xl font-semibold text-gray-600 mb-4">{title}</h2>
       <div className="flex flex-col gap-4 flex-1 mb-4">
         {tasks.map((task: Task) => (
           <Card

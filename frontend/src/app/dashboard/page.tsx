@@ -19,16 +19,17 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="bg-gray-100">
-      <button className="logoutbutton" onClick={handleLogout}>
-        Logout
-      </button>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-start py-6">
+      <div className="w-full max-w-7xl px-4 relative">
+        <button className="logoutbutton" onClick={handleLogout}>
+          Logout
+        </button>
 
-      <div className="min-h-screen p-6 mb-3 flex flex-col items-center bg-custom-background">
-        <div className="max-w-xl mx-auto bg-blue-300 bg-custom-card p-5 rounded shadow">
-          <h1 className="text-custom-header font-bold text-xl">ALL CHORES</h1>
-        </div>
+        <h1 className="text-2xl font-semibold text-center text-gray-600 mb-8">
+          All chores
+        </h1>
 
+        {/* Board */}
         <Board />
       </div>
     </div>

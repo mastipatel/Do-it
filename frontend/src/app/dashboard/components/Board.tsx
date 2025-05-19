@@ -88,22 +88,24 @@ const Board = () => {
   };
 
   return (
-    <div className="flex gap-4 p-4 overflow-x-auto justify-center">
-      {STATUSES.map(
-        (
-          status //for each status, create col, & pass add&update status func
-        ) => (
-          <Column
-            key={status}
-            title={status}
-            tasks={tasks.filter((task) => task.status === status)}
-            onAddTask={handleAddTask}
-            onStatusChange={handleStatusChange}
-            onDelete={handleDeleteTask}
-            onEdit={handleEditTask}
-          />
-        )
-      )}
+    <div className="w-full flex justify-center">
+      <div className="flex gap-4 p-4 overflow-x-auto justify-center max-w-7xl w-full">
+        {STATUSES.map(
+          (
+            status //for each status, create col, & pass add&update status func
+          ) => (
+            <Column
+              key={status}
+              title={status}
+              tasks={tasks.filter((task) => task.status === status)}
+              onAddTask={handleAddTask}
+              onStatusChange={handleStatusChange}
+              onDelete={handleDeleteTask}
+              onEdit={handleEditTask}
+            />
+          )
+        )}
+      </div>
     </div>
   );
 };
