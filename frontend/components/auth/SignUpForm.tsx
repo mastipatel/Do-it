@@ -1,35 +1,33 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signUpUser } from "../../services/sign-up";
 
-export default function SignInForm() {
+export default function SignUpForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
+    try {
+      const data = await signUpUser({ email, password });
+      console.log(data);
 
-    const res = await fetch("http://localhost:4000/api/users/sign-up", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      router.push("/dashboard");
-    } else {
-      alert(data.message || "Signup failed");
-      router.push("/sign-in");
+      if (data.email) {
+        localStorage.setItem("email", data.email);
+        router.push("/dashboard");
+      } else {
+        alert(data.message || "Sign up failed");
+      }
+    } catch (error) {
+      console.error("Sign up error:", error);
+      alert("An error occurred during sign up. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -45,6 +43,7 @@ export default function SignInForm() {
             onChange={(e) => setEmail(e.target.value)}
             className="input"
             required
+            disabled={isLoading}
           />
         </div>
         <div className="mb-6">
@@ -55,29 +54,19 @@ export default function SignInForm() {
             onChange={(e) => setPassword(e.target.value)}
             className="input"
             required
+            disabled={isLoading}
+            minLength={4}
           />
         </div>
-        <div>
-          <label className="label">Confirm Password</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="input"
-            required
-          />
-        </div>
-        <div>
-          <button type="submit" className="button">
-            Sign Up
-          </button>
-          <p className="mt-4 text-center">
-            Already have an account?{" "}
-            <a href="/sign-in" className="text-blue-500">
-              Sign in here
-            </a>
-          </p>
-        </div>
+        <button type="submit" className="button" disabled={isLoading}>
+          {isLoading ? "Signing Up..." : "Sign Up"}
+        </button>
+        <p className="mt-4 text-center">
+          Already have an account?{" "}
+          <a href="/sign-in" className="text-blue-500">
+            Sign In
+          </a>
+        </p>
       </form>
     </div>
   );

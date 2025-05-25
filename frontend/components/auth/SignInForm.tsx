@@ -1,34 +1,40 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signInUser } from "../../services/sign-in";
 
 export default function SignInForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
-    const res = await fetch(
-      "https://do-it-backend-de38.onrender.com/api/users/sign-in",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ email, password }),
-      }
-    );
-
-    const data = await res.json();
-    console.log(data);
-
-    if (data.email) {
-      localStorage.setItem("email", data.email);
-      router.push("/dashboard");
-    } else {
-      alert(data.message || "Invalid login");
+    // Check if email and password are empty
+    if (!email || !password) {
+      alert("Email and password are required");
+      setIsLoading(false);
       return;
+    }
+
+    try {
+      const data = await signInUser({ email, password });
+      console.log(data);
+
+      if (data.email) {
+        localStorage.setItem("email", data.email);
+        router.push("/dashboard");
+      } else {
+        alert(data.message || "Invalid login");
+      }
+    } catch (error) {
+      console.error("Sign in error:", error);
+      alert("An error occurred during sign in. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -44,6 +50,7 @@ export default function SignInForm() {
             onChange={(e) => setEmail(e.target.value)}
             className="input"
             required
+            disabled={isLoading}
           />
         </div>
         <div className="mb-6">
@@ -54,10 +61,11 @@ export default function SignInForm() {
             onChange={(e) => setPassword(e.target.value)}
             className="input"
             required
+            disabled={isLoading}
           />
         </div>
-        <button type="submit" className="button">
-          Sign In
+        <button type="submit" className="button" disabled={isLoading}>
+          {isLoading ? "Signing In..." : "Sign In"}
         </button>
         <p className="mt-4 text-center">
           Don't have an account?{" "}

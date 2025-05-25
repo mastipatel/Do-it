@@ -5,15 +5,28 @@ const userRoute = require("./routes/user.route.js");
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
+require('dotenv').config();
 
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://do-it-frontend.netlify.app',
+];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 }));
+
 
 //routes
 app.use("/api/chores", choreRoute);

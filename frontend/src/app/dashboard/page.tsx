@@ -5,8 +5,10 @@ import Board from "./components/Board";
 
 export default function DashboardPage() {
   const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     const email = localStorage.getItem("email");
     if (!email) {
       router.push("/sign-in");
@@ -30,7 +32,7 @@ export default function DashboardPage() {
         </h1>
 
         {/* Board */}
-        <Board />
+        {isClient && <Board />}
       </div>
     </div>
   );

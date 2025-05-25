@@ -54,11 +54,14 @@ const Column: React.FC<ColumnProps> = ({
     }
 
     try {
-      const res = await fetch("http://localhost:4000/api/chores/add-chore", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const res = await fetch(
+        "https://do-it-backend-de38.onrender.com/api/chores/add-chore",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
 
       const savedChore = await res.json();
 
