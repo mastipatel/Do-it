@@ -9,7 +9,7 @@ interface SignUpResponse {
 }
 
 export const signUpUser = async (credentials: SignUpRequest): Promise<SignUpResponse> => {
-  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://do-it-backend-de38.onrender.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000';
   
   const res = await fetch(`${baseUrl}/api/users/sign-up`, {
     method: "POST",

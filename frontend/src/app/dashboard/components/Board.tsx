@@ -1,7 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import Column from "./Column";
-export interface Task {
+
+import {
+  getAllChores,
+  updateChore,
+  deleteChore,
+  createChore,
+} from "../../../../services/chores";
+
+export interface Chore {
   _id: string;
   name: string;
   description: string;
@@ -11,100 +19,77 @@ export interface Task {
   Reminder: boolean;
   status: "To-do" | "In-progress" | "Done";
 }
-const STATUSES: Task["status"][] = ["To-do", "In-progress", "Done"];
+
+const STATUSES: Chore["status"][] = ["To-do", "In-progress", "Done"];
 
 const Board = () => {
-  const [tasks, setTasks] = useState<Task[]>([]); //aLL TASKS ARE STORED
+  const [chores, setChores] = useState<Chore[]>([]); // all chores
 
   useEffect(() => {
-    const fetchTasks = async () => {
+    const fetchChores = async () => {
       try {
-        const response = await fetch(
-          "https://do-it-backend-de38.onrender.com/api/chores"
-        );
-        const data = await response.json();
-        setTasks(data);
+        const data = await getAllChores();
+        setChores(data);
       } catch (error) {
-        console.error("Error fetching tasks:", error);
+        console.error("Error fetching chores:", error);
       }
     };
 
-    fetchTasks();
+    fetchChores();
   }, []);
 
-  const handleAddTask = (task: Task) => {
-    setTasks((prev) => [...prev, task]);
+  const handleAddChore = (chore: Chore) => {
+    setChores((prev) => [...prev, chore]);
   };
 
-  const handleStatusChange = async (_id: string, newStatus: Task["status"]) => {
+  const handleStatusChange = async (
+    _id: string,
+    newStatus: Chore["status"]
+  ) => {
     try {
-      setTasks((prev) =>
-        prev.map((task) =>
-          task._id === _id ? { ...task, status: newStatus } : task
-        )
-      );
-
-      const response = await fetch(
-        `https://do-it-backend-de38.onrender.com/api/chores/${_id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status: newStatus }),
-        }
+      const updated = await updateChore(_id, { status: newStatus });
+      setChores((prev) =>
+        prev.map((chore) => (chore._id === _id ? updated : chore))
       );
     } catch (error) {
-      console.error("Error updating task status:", error);
+      console.error("Error updating chore status:", error);
     }
   };
 
-  const handleDeleteTask = async (_id: string) => {
+  const handleDeleteChore = async (_id: string) => {
     try {
-      await fetch(`https://do-it-backend-de38.onrender.com/api/chores/${_id}`, {
-        method: "DELETE",
-      });
-      setTasks((prev) => prev.filter((task) => task._id !== _id));
+      await deleteChore(_id);
+      setChores((prev) => prev.filter((chore) => chore._id !== _id));
     } catch (error) {
-      console.error("Error deleting task:", error);
+      console.error("Error deleting chore:", error);
     }
   };
 
-  const handleEditTask = async (_id: string, updatedData: Partial<Task>) => {
+  const handleEditChore = async (_id: string, updatedData: Partial<Chore>) => {
     try {
-      const response = await fetch(
-        `https://do-it-backend-de38.onrender.com/api/chores/${_id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatedData),
-        }
-      );
-      const updatedTask = await response.json();
-      setTasks((prev) =>
-        prev.map((task) => (task._id === _id ? updatedTask : task))
+      const updated = await updateChore(_id, updatedData);
+      setChores((prev) =>
+        prev.map((chore) => (chore._id === _id ? updated : chore))
       );
     } catch (error) {
-      console.error("Error editing task:", error);
+      console.error("Error editing chore:", error);
     }
   };
 
   return (
     <div className="w-full flex justify-center">
       <div className="flex gap-4 p-4 overflow-x-auto justify-center max-w-7xl w-full">
-        {STATUSES.map(
-          (
-            status //for each status, create col, & pass add&update status func
-          ) => (
-            <Column
-              key={status}
-              title={status}
-              tasks={tasks.filter((task) => task.status === status)}
-              onAddTask={handleAddTask}
-              onStatusChange={handleStatusChange}
-              onDelete={handleDeleteTask}
-              onEdit={handleEditTask}
-            />
-          )
-        )}
+        {STATUSES.map((status) => (
+          <Column
+            key={status}
+            title={status}
+            chores={chores.filter((chore) => chore.status === status)}
+            onAddChore={handleAddChore}
+            onStatusChange={handleStatusChange}
+            onDelete={handleDeleteChore}
+            onEdit={handleEditChore}
+          />
+        ))}
       </div>
     </div>
   );

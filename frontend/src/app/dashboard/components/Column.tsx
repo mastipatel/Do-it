@@ -1,26 +1,27 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
-import type { Task } from "./Board";
+import { Chore } from "./Board";
+import { createChore } from "../../../../services/chores";
 interface ColumnProps {
-  title: Task["status"];
-  tasks: Task[];
-  onAddTask: (task: Task) => void;
-  onStatusChange: (id: string, newStatus: Task["status"]) => void;
+  title: Chore["status"];
+  chores: Chore[];
+  onAddChore: (chore: Chore) => void;
+  onStatusChange: (id: string, newStatus: Chore["status"]) => void;
   onDelete: (id: string) => void;
-  onEdit: (id: string, updatedData: Partial<Task>) => void;
+  onEdit: (id: string, updatedData: Partial<Chore>) => void;
 }
 
 const Column: React.FC<ColumnProps> = ({
   title,
-  tasks,
-  onAddTask,
+  chores = [],
+  onAddChore,
   onStatusChange,
   onDelete,
   onEdit,
 }) => {
   const [showForm, setShowForm] = useState(false);
-  const [editForm, setEditForm] = useState<false | Task>(false);
+  const [editForm, setEditForm] = useState<false | Chore>(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -48,24 +49,15 @@ const Column: React.FC<ColumnProps> = ({
 
   const handleAddTask = async () => {
     const data = { ...formData };
+
     if (!data.name || !data.description || !data.category || !data.assignee) {
       alert("Please fill in all fields");
       return;
     }
 
     try {
-      const res = await fetch(
-        "https://do-it-backend-de38.onrender.com/api/chores/add-chore",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        }
-      );
-
-      const savedChore = await res.json();
-
-      onAddTask(savedChore);
+      const savedChore = await createChore(data);
+      onAddChore(savedChore);
       setFormData({
         name: "",
         description: "",
@@ -89,7 +81,7 @@ const Column: React.FC<ColumnProps> = ({
     }
   };
 
-  const handleLocalEdit = async (id: string, updatedData: Partial<Task>) => {
+  const handleLocalEdit = async (id: string, updatedData: Partial<Chore>) => {
     try {
       await onEdit(id, updatedData);
     } catch (error) {
@@ -101,7 +93,7 @@ const Column: React.FC<ColumnProps> = ({
     <div className="column">
       <h2 className="text-xl font-semibold text-gray-600 mb-4">{title}</h2>
       <div className="flex flex-col gap-4 flex-1 mb-4">
-        {tasks.map((task: Task) => (
+        {chores?.map((task) => (
           <Card
             key={task._id}
             {...task}
@@ -174,4 +166,5 @@ const Column: React.FC<ColumnProps> = ({
     </div>
   );
 };
+
 export default Column;
