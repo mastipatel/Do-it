@@ -105,8 +105,8 @@ const Column: React.FC<ColumnProps> = ({
       </div>
 
       {!showForm ? (
-        <button onClick={() => setShowForm(true)} className="button">
-          + Add Task
+        <button onClick={() => setShowForm(true)} className="addbutton">
+          +
         </button>
       ) : (
         <div className="bg-white p-3 rounded shadow flex flex-col gap-2">

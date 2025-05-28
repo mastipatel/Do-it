@@ -18,11 +18,12 @@ export interface CardProps {
 const Card: React.FC<CardProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   return (
     <>
       <div
-        onClick={() => setShowModal(true)} //task card preview
+        //onClick={() => setShowModal(true)} //task card preview
         className="taskCard relative pt-8 px-4 pb-4"
       >
         <button
@@ -41,6 +42,7 @@ const Card: React.FC<CardProps> = (props) => {
             if (confirm("Are you sure you want to delete this task?")) {
               props.onDelete(props._id);
             }
+            setShowModal(false);
           }}
         >
           ✕
@@ -121,7 +123,7 @@ const Card: React.FC<CardProps> = (props) => {
                   className="w-full border p-1 mb-2"
                 />
                 <button
-                  className="bg-blue-500 text-white px-4 py-1 rounded"
+                  className="bg-yellow-500 text-white px-4 py-1 rounded"
                   onClick={() => {
                     setEditModal(false);
                     setShowModal(false);

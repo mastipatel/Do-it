@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Column from "./Column";
+import { useRouter } from "next/navigation";
 
 import {
   getAllChores,
@@ -9,6 +10,9 @@ import {
   createChore,
 } from "../../../../services/chores";
 
+interface BoardProps {
+  initialChores: Chore[];
+}
 export interface Chore {
   _id: string;
   name: string;
@@ -22,8 +26,31 @@ export interface Chore {
 
 const STATUSES: Chore["status"][] = ["To-do", "In-progress", "Done"];
 
-const Board = () => {
-  const [chores, setChores] = useState<Chore[]>([]); // all chores
+const Board: React.FC<BoardProps> = ({ initialChores = [] }) => {
+  const [chores, setChores] = useState<Chore[]>(initialChores); // all chores
+  const router = useRouter();
+
+  useEffect(() => {
+    if (initialChores.length === 0) {
+      const fetchChores = async () => {
+        try {
+          const data = await getAllChores();
+          setChores(data);
+        } catch (error) {
+          console.error("Error fetching chores:", error);
+        }
+      };
+
+      fetchChores();
+    }
+  }, [initialChores]);
+
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    if (!email) {
+      router.push("/sign-in");
+    }
+  }, []);
 
   useEffect(() => {
     const fetchChores = async () => {
@@ -34,7 +61,6 @@ const Board = () => {
         console.error("Error fetching chores:", error);
       }
     };
-
     fetchChores();
   }, []);
 

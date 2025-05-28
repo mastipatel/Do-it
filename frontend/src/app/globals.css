@@ -40,6 +40,15 @@
   @apply mt-4 w-full font-semibold bg-blue-100 text-blue-500 font-medium py-2 rounded-md hover:bg-blue-200 transition;
 }
 
+.addbutton {
+  @apply w-full text-gray-600 py-2 px-4 rounded-md transition font-bold duration-200;
+} 
+
+.addbutton:hover {
+  background-color: #777b7e;
+  color: #fff;
+}
+
 .editbutton {
   @apply w-full text-white py-2 px-4 rounded-md transition duration-200;
 }
@@ -60,29 +69,13 @@
   @apply flex flex-col items-center mb-3 min-h-screen bg-gray-100;
 }
  
-/* .logoutbutton {
-  background-color: grey;
-  border: none;
-  color: #e7e7e7;
-  padding: 11px 32px;
-  text-align: center;
-  text-decoration: none;
-  float: right;
-  font-size: 16px;
-  margin-top: 10px;
-  margin-right: 200px;
-  font-weight: 550;
-  font-weight: 700;
-  border-radius: 10px;
-} */
-
 .logoutbutton {
   @apply absolute font-bold top-0 right-0 mt-2 mr-2 bg-gray-200 text-gray-500 px-4 py-2 rounded-md  transition;
 }
 
 .logoutbutton:hover {
-  background-color: #bebdb8;
-  color: #777b7e;
+  background-color: #777b7e;
+  color: #eee5e5;
 }
 
 .taskCard {
