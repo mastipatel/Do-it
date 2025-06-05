@@ -109,13 +109,13 @@ const Column: React.FC<ColumnProps> = ({
           +
         </button>
       ) : (
-        <div className="bg-white p-3 rounded shadow flex flex-col gap-2">
+        <div className="bg-white p-3 rounded shadow flex flex-col gap-2 hover:bg-gray-100">
           <select
             value={formData.category}
             onChange={(e) =>
               setFormData({ ...formData, category: e.target.value })
             }
-            className="border p-1 rounded text-sm"
+            className="border p-1 text-sm rounded"
           >
             <option value="">Select category</option>
             <option value="kitchen">Kitchen</option>
@@ -157,9 +157,18 @@ const Column: React.FC<ColumnProps> = ({
           />
           <button
             onClick={handleAddTask}
-            className="bg-blue-500 text-white text-sm px-2 py-1 rounded mt-1"
+            className="bg-blue-300 hover:bg-blue-400 text-white text-sm font-bold px-2 py-1 rounded mt-1"
           >
             Add
+          </button>
+          <button
+            className="text-red-500 hover:bg-red-100 rounded px-1"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowForm(false);
+            }}
+          >
+            ✕
           </button>
         </div>
       )}

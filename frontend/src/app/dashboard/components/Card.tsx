@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import clsx from "clsx";
 
 export interface CardProps {
   _id: string;
@@ -23,46 +24,65 @@ const Card: React.FC<CardProps> = (props) => {
   return (
     <>
       <div
-        //onClick={() => setShowModal(true)} //task card preview
-        className="taskCard relative pt-8 px-4 pb-4"
+        onClick={() => {
+          setShowModal(true);
+          //setEditModal(true);
+        }}
       >
-        <button
-          className="editButton absolute top-2 right-7 hover:bg-gray-200 rounded"
-          onClick={(e) => {
-            e.stopPropagation();
-            setEditModal(true);
-            setShowModal(true);
-          }}
+        <div
+          className={clsx("relative pt-4 px-4 pb-4 border rounded-xl shadow", {
+            "bg-pink-50 hover:bg-pink-100": props.status === "To-do",
+            "bg-blue-50 hover:bg-blue-100": props.status === "In-progress",
+            "bg-green-50 hover:bg-green-100": props.status === "Done",
+          })}
         >
-          ✎
-        </button>
-        <button
-          className="deleteButton text-red-500 absolute top-2 right-2 hover:bg-gray-200 rounded"
-          onClick={(e) => {
-            if (confirm("Are you sure you want to delete this task?")) {
-              props.onDelete(props._id);
-            }
-            setShowModal(false);
-          }}
-        >
-          ✕
-        </button>
-        <div className="font-semibold text-gray-900 mb-1">{props.name}</div>
-        <div className="text-xs text-gray-500">{props.assignee}</div>
-        <div className="text-xs text-gray-500">{props.category}</div>
-        <div className="text-xs text-gray-500">
-          Due:{" "}
-          {typeof props.Deadline === "string"
-            ? props.Deadline.slice(0, 10)
-            : "N/A"}
+          <div className="flex justify-between items-start mb-2">
+            <div className="font-semibold text-gray-500">{props.name}</div>
+
+            <div className="flex space-x-2">
+              <button
+                className="hover:bg-gray-200 rounded px-1"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setEditModal(true);
+                  setShowModal(true);
+                }}
+              >
+                ✎
+              </button>
+              <button
+                className="text-red-500 hover:bg-pink-50 rounded px-1"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (confirm("Are you sure you want to delete this task?")) {
+                    props.onDelete(props._id);
+                  }
+                  setShowModal(false);
+                }}
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+
+          <div className="space-y-1 text-xs text-gray-500">
+            <div>{props.assignee}</div>
+            <div>{props.category}</div>
+            <div>
+              Due:{" "}
+              {typeof props.Deadline === "string"
+                ? props.Deadline.slice(0, 10)
+                : "N/A"}
+            </div>
+          </div>
         </div>
       </div>
 
       {showModal && (
-        <div className="fixed inset-50 bg-gray-200 bg-opacity-40 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded shadow-lg w-full max-w-md relative">
+        <div className="fixed inset-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md relative border-3">
             <button
-              className="absolute top-2 right-2"
+              className="absolute top-2 right-2 hover:bg-gray-200 rounded px-1"
               onClick={() => {
                 setShowModal(false);
                 setEditModal(false);
@@ -73,14 +93,14 @@ const Card: React.FC<CardProps> = (props) => {
 
             {editModal ? (
               <>
-                <h2 className="text-lg font-semibold mb-2">Edit Task</h2>
+                <h2 className="text-lg font-semibold mb-2">Edit chore</h2>
 
                 <select
                   value={props.category}
                   onChange={(e) =>
                     props.onEdit(props._id, { category: e.target.value })
                   }
-                  className="w-full border p-1 mb-2"
+                  className="w-full border p-1 mb-2 rounded text-sm hover:bg-gray-100"
                 >
                   <option value="">Select category</option>
                   <option value="kitchen">Kitchen</option>
@@ -94,7 +114,7 @@ const Card: React.FC<CardProps> = (props) => {
                   onChange={(e) =>
                     props.onEdit(props._id, { name: e.target.value })
                   }
-                  className="w-full border p-1 mb-2"
+                  className="w-full border p-1 mb-2 rounded text-sm hover:bg-gray-100"
                 />
                 <textarea
                   value={props.description}
@@ -102,7 +122,7 @@ const Card: React.FC<CardProps> = (props) => {
                   onChange={(e) =>
                     props.onEdit(props._id, { description: e.target.value })
                   }
-                  className="w-full border p-1 mb-2"
+                  className="w-full border p-1 mb-2 rounded text-sm hover:bg-gray-100"
                 />
                 <input
                   type="text"
@@ -111,7 +131,7 @@ const Card: React.FC<CardProps> = (props) => {
                   onChange={(e) =>
                     props.onEdit(props._id, { assignee: e.target.value })
                   }
-                  className="w-full border p-1 mb-2"
+                  className="w-full border p-1 mb-2 rounded text-sm hover:bg-gray-100"
                 />
                 <input
                   type="date"
@@ -120,10 +140,10 @@ const Card: React.FC<CardProps> = (props) => {
                   onChange={(e) =>
                     props.onEdit(props._id, { Deadline: e.target.value })
                   }
-                  className="w-full border p-1 mb-2"
+                  className="w-full border p-1 mb-2 rounded text-sm hover:bg-gray-100"
                 />
                 <button
-                  className="bg-yellow-500 text-white px-4 py-1 rounded"
+                  className="bg-yellow-500 text-white px-4 py-1 rounded hover:bg-yellow-600"
                   onClick={() => {
                     setEditModal(false);
                     setShowModal(false);

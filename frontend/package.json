@@ -12,6 +12,7 @@
     "@auth0/auth0-react": "^2.3.0",
     "@hello-pangea/dnd": "^18.0.1",
     "@tailwindcss/typography": "github:tailwindcss/typography",
+    "clsx": "^2.1.1",
     "js-cookie": "^3.0.5",
     "next": "^15.3.1",
     "postcss": "^8.5.3",
