@@ -32,9 +32,12 @@ export default function SignUpForm() {
   };
 
   return (
-    <div className="form-container">
-      <form onSubmit={handleSubmit} className="form-box">
-        <h2 className="form-heading">Sign Up</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-stone-50 p-8 w-full max-w-md border-3 rounded-2xl"
+      >
+        <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
         <div className="mb-4">
           <label className="label">Email</label>
           <input

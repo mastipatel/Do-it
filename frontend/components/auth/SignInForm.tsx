@@ -39,9 +39,12 @@ export default function SignInForm() {
   };
 
   return (
-    <div className="form-container">
-      <form onSubmit={handleSubmit} className="form-box">
-        <h2 className="form-heading">Sign In</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-stone-50 p-8 shadow-md w-full max-w-md border-3 rounded-2xl"
+      >
+        <h2 className="text-2xl font-bold mb-6 text-center">Sign In</h2>
         <div className="mb-4">
           <label className="label">Email</label>
           <input
