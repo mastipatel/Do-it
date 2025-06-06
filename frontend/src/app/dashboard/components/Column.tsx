@@ -109,13 +109,13 @@ const Column: React.FC<ColumnProps> = ({
           +
         </button>
       ) : (
-        <div className="bg-white p-3 rounded shadow flex flex-col gap-2 hover:bg-gray-100">
+        <div className="bg-white p-3 rounded shadow flex flex-col gap-2">
           <select
             value={formData.category}
             onChange={(e) =>
               setFormData({ ...formData, category: e.target.value })
             }
-            className="border p-1 text-sm rounded"
+            className="border p-1 text-sm rounded hover:bg-gray-100"
           >
             <option value="">Select category</option>
             <option value="kitchen">Kitchen</option>
@@ -127,7 +127,7 @@ const Column: React.FC<ColumnProps> = ({
             placeholder="Task name"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="border p-1 rounded text-sm"
+            className="border p-1 rounded text-sm hover:bg-gray-100"
           />
           <input
             type="text"
@@ -136,7 +136,7 @@ const Column: React.FC<ColumnProps> = ({
             onChange={(e) =>
               setFormData({ ...formData, description: e.target.value })
             }
-            className="border p-1 rounded text-sm"
+            className="border p-1 rounded text-sm hover:bg-gray-100"
           />
           <input
             type="text"
@@ -145,7 +145,7 @@ const Column: React.FC<ColumnProps> = ({
             onChange={(e) =>
               setFormData({ ...formData, assignee: e.target.value })
             }
-            className="border p-1 rounded text-sm"
+            className="border p-1 rounded text-sm hover:bg-gray-100"
           />
           <input
             type="date"
@@ -153,22 +153,22 @@ const Column: React.FC<ColumnProps> = ({
             onChange={(e) =>
               setFormData({ ...formData, Deadline: e.target.value })
             }
-            className="border p-1 rounded text-sm"
+            className="border p-1 rounded text-sm hover:bg-gray-100"
           />
           <button
             onClick={handleAddTask}
-            className="bg-blue-300 hover:bg-blue-400 text-white text-sm font-bold px-2 py-1 rounded mt-1"
+            className="text-gray-600 hover:text-gray-900 rounded px-2 py-2 text-shadow-sm text-sm"
           >
-            Add
+            Add chore
           </button>
           <button
-            className="text-red-500 hover:bg-red-100 rounded px-1"
+            className="text-gray-400 hover:text-gray-600 rounded px-2 text-shadow-sm text-sm"
             onClick={(e) => {
               e.stopPropagation();
               setShowForm(false);
             }}
           >
-            ✕
+            Cancel
           </button>
         </div>
       )}

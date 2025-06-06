@@ -9,7 +9,7 @@ export default async function DashboardPage() {
       <div className="w-full max-w-7xl px-4 relative">
         <LogoutButton />
         <h1 className="text-2xl font-semibold text-center text-gray-600 mb-8">
-          All chores
+          Do-it!
         </h1>
 
         {/* Board */}
